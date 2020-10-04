@@ -207,3 +207,25 @@ class LineRectFill {
         this.curr.startUpdating(cb)
     }
 }
+
+class Renderer {
+
+    animator : Animator = new Animator()
+    lrf : LineRectFill = new LineRectFill()
+
+    render(context : CanvasRenderingContext2D) {
+        this.lrf.draw(context)
+    }
+
+    handleTap(cb : Function) {
+        this.lrf.startUpdating(() => {
+            this.animator.start(() => {
+                cb()
+                this.lrf.update(() => {
+                    this.animator.stop()
+                    cb()
+                })
+            })
+        })
+    }
+}
