@@ -142,3 +142,45 @@ class Animator {
         }
     }
 }
+
+class LRFNode {
+
+    state : State = new State()
+    prev : LRFNode 
+    next : LRFNode 
+
+    constructor(private i : number) {
+        this.addNeighbor()
+    }
+
+    addNeighbor() {
+        if (this.i < colors.length - 1) {
+            this.next = new LRFNode(this.i + 1)
+            this.next.prev = this 
+        }
+    }
+
+    draw(context : CanvasRenderingContext2D) {
+        DrawingUtil.drawLRFNode(context, this.i, this.state.scale)
+    }
+
+    update(cb : Function) {
+        this.state.update(cb)
+    }
+
+    startUpdating(cb : Function) {
+        this.state.startUpdating(cb)
+    }
+
+    getNext(dir : number, cb : Function) : LRFNode {
+        var curr : LRFNode = this.prev 
+        if (dir == 1) {
+            curr = this.next
+        }
+        if (curr) {
+            return curr 
+        }
+        cb()
+        return this 
+    }
+}
