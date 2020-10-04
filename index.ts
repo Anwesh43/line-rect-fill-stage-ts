@@ -30,3 +30,40 @@ class ScaleUtil {
         return Math.sin(scale * Math.PI)
     }
 }
+
+class DrawingUtil {
+
+    static drawLine(context : CanvasRenderingContext2D, x1 : number, y1 : number, x2 : number, y2 : number) {
+        context.beginPath()
+        context.moveTo(x1, y1)
+        context.lineTo(x2, y2)
+        context.stroke()
+    }
+
+    static drawLineRectFill(context : CanvasRenderingContext2D, scale : number) {
+        const sf : number = ScaleUtil.sinify(scale)
+        const sf1 : number = ScaleUtil.divideScale(sf, 0, parts)
+        const sf2 : number = ScaleUtil.divideScale(sf, 1, parts)
+        const sf3 : number = ScaleUtil.divideScale(sf, 2, parts)
+        const offset : number = Math.min(w, h) / offsetFactor 
+        context.save()
+        context.translate(0, h)
+        for (var j = 0; j < 2; j++) {
+            context.save()
+            context.translate(offset + (w - 2 * offset) * j, 0)
+            DrawingUtil.drawLine(context, 0, 0, 0, -offset * sf1)
+            context.restore()
+        }
+        DrawingUtil.drawLine(context, offset, -offset, offset + (w - 2 * offset) * sf2, -offset)
+        context.fillRect(offset, -offset, (w - 2 * offset) * sf3, offset)
+        context.restore()
+    }
+
+    static drawLRFNode(context : CanvasRenderingContext2D, i : number, scale : number) {
+        context.fillStyle = colors[i]
+        context.strokeStyle = colors[i]
+        context.lineCap = 'round'
+        context.lineWidth = Math.min(w, h) / strokeFactor 
+        DrawingUtil.drawLineRectFill(context, scale)
+    }
+}
