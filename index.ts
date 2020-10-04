@@ -11,7 +11,7 @@ const colors : Array<string> = [
     "#FFC107",
     "#2196F3"
 ]
-const parts : number = 3 
+const parts : number = 4 
 const scGap : number = 0.02 / parts 
 
 class ScaleUtil {
